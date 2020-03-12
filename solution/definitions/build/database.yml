@@ -1,0 +1,23 @@
+parameters:
+  sourceProject: ''
+
+steps:
+  - bash: |
+      if [ -z "$SOLUTION" ]; then
+        echo "##vso[task.logissue type=error;]Missing template parameter \"sourceProject\""
+        echo "##vso[task.complete result=Failed;]"
+      fi
+    env:
+      SOLUTION: ${{ parameters.sourceProject }}
+    displayName: Check for required database artifact parameter 'sourceProject'
+
+  - task: MSBuild@1
+    displayName: 'Build Database Project '
+    inputs:
+      solution: ${{ parameters.sourceProject }}
+      msbuildArguments: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: (dacpac)'
+    inputs:
+      ArtifactName: dacpac

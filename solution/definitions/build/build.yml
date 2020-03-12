@@ -1,0 +1,107 @@
+parameters:
+  testSource: $(Build.SourcesDirectory)\tests\Employee.Web.UI.Test.XUnit
+  appSource: src\Employee.Web.UI
+
+steps:
+  - task: UseDotNet@2
+    displayName: 'Use .Net Core SDK 2.2.x'
+    inputs:
+      version: 2.2.x
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore: Project Dependencies'
+    inputs:
+      command: restore
+      projects: '**/*.csproj'
+
+  - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@20
+    displayName: 'Security Scan: WhiteSource Bolt'
+
+  - task: PowerShell@2
+    displayName: 'PowerShell: Add Project GUID'
+    inputs:
+      targetType: filePath
+      filePath: './solution/powershell/sonar-add-project-guid.ps1'
+      workingDirectory: src/Employee.Web.UI
+
+  - task: SonarCloudPrepare@1
+    displayName: 'SonarCloud: Prepare analysis'
+    inputs:
+      SonarCloud: '$(Sonar.ServiceConnection.Name)'
+      organization: '$(Sonar.Organization)'
+      projectKey: '$(Sonar.ProjectKey)'
+      projectName: '$(Sonar.ProjectName)'
+      projectVersion: '$(Sonar.ProjectVersion)'
+      extraProperties: |
+        sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/coverage/coverage.opencover.xml
+        sonar.cs.vstest.reportsPaths=${{ parameters.testSource }}\TestResults\*.trx
+        sonar.exclusions=**/wwwroot/lib/**/*
+     
+  - task: DotNetCoreCLI@2
+    displayName: 'Build Web Application'
+    inputs:
+      projects: |
+        **/*.csproj
+        ! **/*Employee.Web.UI.Test.Selenium.csproj
+      arguments: '--configuration $(BuildConfiguration) --no-restore'
+      workingDirectory: src
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Unit Tests: Run'
+    inputs:
+      command: test
+      projects: '**/*Employee.Web.UI.Test.XUnit.csproj'
+      arguments: '--configuration $(BuildConfiguration) --no-restore --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=$(Build.SourcesDirectory)/coverage/ --logger trx'
+      publishTestResults: false
+      testRunTitle: 'XUnit Tests'
+      workingDirectory: tests
+
+  - task: PublishTestResults@2
+    displayName: 'Unit Tests: Publish Test Results'
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '${{ parameters.testSource }}\TestResults\*.trx'
+      testRunTitle: Unit
+      buildPlatform: '$(BuildPlatform)'
+      buildConfiguration: '$(BuildConfiguration)'
+
+  - task: reportgenerator@4
+    displayName: SonarCloud Create Code Coverage Report
+    inputs:
+      reports: '$(Build.SourcesDirectory)/coverage/coverage.opencover.xml'
+      targetdir: '$(Build.SourcesDirectory)/coverage/cobertura'
+      reporttypes: 'HtmlInline_AzurePipelines;Cobertura'
+        
+  - task: PublishCodeCoverageResults@1
+    displayName: 'SonarCloud: Publish Code Coverage'
+    inputs:
+      codeCoverageTool: cobertura
+      summaryFileLocation: '$(Build.SourcesDirectory)/coverage/cobertura/cobertura.xml'
+      reportDirectory: '$(Build.SourcesDirectory)/coverage/cobertura'
+
+  - task: SonarCloudAnalyze@1
+    displayName: 'SonarCloud: Run Code Analysis'
+
+  - task: SonarCloudPublish@1
+    displayName: 'SonarCloud: Publish Quality Gate Result'
+
+  - task: sonarcloud-buildbreaker@2
+    displayName: 'SonarCloud: Check Quality Gate(Buildbreaker)'
+    inputs:
+      SonarCloud: '$(Sonar.ServiceConnection.Name)'
+      organization: '$(Sonar.Organization)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Publish: Create Zip Package'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '**/*Employee.Web.UI.csproj'
+      arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-restore --no-build'
+      workingDirectory: src/Employee.Web.UI
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish: Pipeline Artifact(webapp)'
+    inputs:
+      ArtifactName: webapp
+      condition: succeeded()

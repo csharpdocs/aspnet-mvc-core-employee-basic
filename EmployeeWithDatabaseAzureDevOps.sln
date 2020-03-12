@@ -1,0 +1,121 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2018
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1AB05ED8-56BB-434F-A831-F844A75FE5BE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B1D6CE9E-5F96-48FE-BC51-9DBEF5BB2B1A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6DA000E4-FA6E-4CB5-B1A8-FF726D9ABEC9}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "definitions", "definitions", "{A6EEFD19-A265-40D1-9379-CF539B6BA9A1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{34E56318-0C08-405A-9295-2D9630A528AD}"
+	ProjectSection(SolutionItems) = preProject
+		solution\images\0.0 visual studio - application code structure.png = solution\images\0.0 visual studio - application code structure.png
+		solution\images\0.1 visual studio - infrastructure code structure.png = solution\images\0.1 visual studio - infrastructure code structure.png
+		solution\images\0.2 visual studio - loacal machine folder structure.png = solution\images\0.2 visual studio - loacal machine folder structure.png
+		solution\images\1 azure pipeline - summary.png = solution\images\1 azure pipeline - summary.png
+		solution\images\2 azure pipeline - unit tests.png = solution\images\2 azure pipeline - unit tests.png
+		solution\images\3 azure pipeline - sonarcloud report path.png = solution\images\3 azure pipeline - sonarcloud report path.png
+		solution\images\4 azure pipeline - code coverage.png = solution\images\4 azure pipeline - code coverage.png
+		solution\images\5 azure pipeline - whitesource bolt security report.png = solution\images\5 azure pipeline - whitesource bolt security report.png
+		solution\images\6 sonarcloud analysis dashboard.png = solution\images\6 sonarcloud analysis dashboard.png
+		solution\images\7 sonarcloud analysis overview.png = solution\images\7 sonarcloud analysis overview.png
+		solution\images\8 azure pipeline - ci stages status.png = solution\images\8 azure pipeline - ci stages status.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{04231724-B76E-473B-A49F-85B4BF7D11C6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{0A04E4BB-8EC0-4A84-9B85-A59637A3A05A}"
+	ProjectSection(SolutionItems) = preProject
+		solution\powershell\sonar-add-project-guid.ps1 = solution\powershell\sonar-add-project-guid.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "armtemplates", "armtemplates", "{78884614-5C3B-419B-AC8B-B1A3B0B533F0}"
+	ProjectSection(SolutionItems) = preProject
+		solution\infrastructure\armtemplates\parameters.json = solution\infrastructure\armtemplates\parameters.json
+		solution\infrastructure\armtemplates\template.json = solution\infrastructure\armtemplates\template.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{ADB65D8F-B1DE-4FE6-A9F7-58B94A7FDAEE}"
+	ProjectSection(SolutionItems) = preProject
+		solution\infrastructure\terraform\main.tf = solution\infrastructure\terraform\main.tf
+		solution\infrastructure\terraform\variables.tf = solution\infrastructure\terraform\variables.tf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{A7E2ABBB-396F-4AB8-8E6E-7851EF60775B}"
+	ProjectSection(SolutionItems) = preProject
+		solution\definitions\build\artifact-arm.yml = solution\definitions\build\artifact-arm.yml
+		solution\definitions\build\artifact-terraform.yml = solution\definitions\build\artifact-terraform.yml
+		solution\definitions\build\azure-pipelines-ci.yml = solution\definitions\build\azure-pipelines-ci.yml
+		solution\definitions\build\build.yml = solution\definitions\build\build.yml
+		solution\definitions\build\database.yml = solution\definitions\build\database.yml
+		solution\definitions\build\load-ui-tests.yml = solution\definitions\build\load-ui-tests.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "release", "release", "{C8AD20B8-B8B2-47D2-8AAE-E23E7FFC27FB}"
+	ProjectSection(SolutionItems) = preProject
+		solution\definitions\release\azure-pipelines-cd.yml = solution\definitions\release\azure-pipelines-cd.yml
+	EndProjectSection
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Employee.Database.SqlServer", "src\Employee.Database.SqlServer\Employee.Database.SqlServer.sqlproj", "{E329DEAF-3824-438D-92E3-912519D79930}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Employee.Web.UI", "src\Employee.Web.UI\Employee.Web.UI.csproj", "{D084D2A1-91F3-472A-B7BB-24FFBE666550}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Employee.Web.UI.Test.Selenium", "tests\Employee.Web.UI.Test.Selenium\Employee.Web.UI.Test.Selenium.csproj", "{655A2079-A99C-4539-99CC-FD772A0B10BA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Employee.Web.UI.Test.XUnit", "tests\Employee.Web.UI.Test.XUnit\Employee.Web.UI.Test.XUnit.csproj", "{655A2679-A67C-4569-99CC-FD972A0B10BA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E329DEAF-3824-438D-92E3-912519D79930}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E329DEAF-3824-438D-92E3-912519D79930}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E329DEAF-3824-438D-92E3-912519D79930}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E329DEAF-3824-438D-92E3-912519D79930}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E329DEAF-3824-438D-92E3-912519D79930}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E329DEAF-3824-438D-92E3-912519D79930}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{D084D2A1-91F3-472A-B7BB-24FFBE666550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D084D2A1-91F3-472A-B7BB-24FFBE666550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D084D2A1-91F3-472A-B7BB-24FFBE666550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D084D2A1-91F3-472A-B7BB-24FFBE666550}.Release|Any CPU.Build.0 = Release|Any CPU
+		{655A2079-A99C-4539-99CC-FD772A0B10BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{655A2079-A99C-4539-99CC-FD772A0B10BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{655A2079-A99C-4539-99CC-FD772A0B10BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{655A2079-A99C-4539-99CC-FD772A0B10BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{655A2679-A67C-4569-99CC-FD972A0B10BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{655A2679-A67C-4569-99CC-FD972A0B10BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{655A2679-A67C-4569-99CC-FD972A0B10BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{655A2679-A67C-4569-99CC-FD972A0B10BA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A6EEFD19-A265-40D1-9379-CF539B6BA9A1} = {6DA000E4-FA6E-4CB5-B1A8-FF726D9ABEC9}
+		{34E56318-0C08-405A-9295-2D9630A528AD} = {6DA000E4-FA6E-4CB5-B1A8-FF726D9ABEC9}
+		{04231724-B76E-473B-A49F-85B4BF7D11C6} = {6DA000E4-FA6E-4CB5-B1A8-FF726D9ABEC9}
+		{0A04E4BB-8EC0-4A84-9B85-A59637A3A05A} = {6DA000E4-FA6E-4CB5-B1A8-FF726D9ABEC9}
+		{78884614-5C3B-419B-AC8B-B1A3B0B533F0} = {04231724-B76E-473B-A49F-85B4BF7D11C6}
+		{ADB65D8F-B1DE-4FE6-A9F7-58B94A7FDAEE} = {04231724-B76E-473B-A49F-85B4BF7D11C6}
+		{A7E2ABBB-396F-4AB8-8E6E-7851EF60775B} = {A6EEFD19-A265-40D1-9379-CF539B6BA9A1}
+		{C8AD20B8-B8B2-47D2-8AAE-E23E7FFC27FB} = {A6EEFD19-A265-40D1-9379-CF539B6BA9A1}
+		{E329DEAF-3824-438D-92E3-912519D79930} = {1AB05ED8-56BB-434F-A831-F844A75FE5BE}
+		{D084D2A1-91F3-472A-B7BB-24FFBE666550} = {1AB05ED8-56BB-434F-A831-F844A75FE5BE}
+		{655A2079-A99C-4539-99CC-FD772A0B10BA} = {B1D6CE9E-5F96-48FE-BC51-9DBEF5BB2B1A}
+		{655A2679-A67C-4569-99CC-FD972A0B10BA} = {B1D6CE9E-5F96-48FE-BC51-9DBEF5BB2B1A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B2452F1D-AA1E-4FD9-A23E-90D6A4340776}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,46 @@
+parameters:
+  solution: ''
+  sourceProject: ''
+
+steps:
+  - bash: |
+      if [ -z "$SOLUTION" ]; then
+        echo "##vso[task.logissue type=error;]Missing template parameter \"solution\""
+        echo "##vso[task.complete result=Failed;]"
+      fi
+    env:
+      SOLUTION: ${{ parameters.solution }}
+    displayName: Check for required selenium ui artifact parameter 'solution'
+  
+  - bash: |
+      if [ -z "$SOLUTION" ]; then
+        echo "##vso[task.logissue type=error;]Missing template parameter \"sourceProject\""
+        echo "##vso[task.complete result=Failed;]"
+      fi
+    env:
+      SOLUTION: ${{ parameters.sourceProject }}
+    displayName: Check for required selenium ui artifact parameter 'sourceProject'
+
+  - task: NuGetToolInstaller@1
+    displayName: 'Install NuGet 5.4.0'
+    inputs:
+      versionSpec: 5.4.0
+      checkLatest: true
+
+  - task: NuGetCommand@2
+    displayName: 'NuGet: Restore Project Packages'
+    inputs:
+      restoreSolution: ${{ parameters.solution }}
+
+  - task: MSBuild@1
+    displayName: 'Build Selenium UI Test Project'
+    inputs:
+      solution: ${{ parameters.sourceProject }}
+      msbuildArguments: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
+      clean: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish: Pipeline Artifact(selenium)'
+    inputs:
+      ArtifactName: uitests
+      condition: succeededOrFailed()

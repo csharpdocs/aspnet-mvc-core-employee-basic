@@ -1,0 +1,26 @@
+parameters:
+  source: ''
+
+steps:
+  - bash: |
+      if [ -z "$SOLUTION" ]; then
+        echo "##vso[task.logissue type=error;]Missing template parameter \"source\""
+        echo "##vso[task.complete result=Failed;]"
+      fi
+    env:
+      SOLUTION: ${{ parameters.source }}
+    displayName: Check for required terraform artifact parameter 'source'
+
+  - task: CopyFiles@2
+    displayName: 'Copy Terraform Files to Target Folder'
+    inputs:
+      SourceFolder: ${{ parameters.source }}
+      Contents: '*.tf'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      CleanTargetFolder: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish: Pipeline Artifact(terraform)'
+    inputs:
+      ArtifactName: terraform
+      condition: succeededOrFailed()

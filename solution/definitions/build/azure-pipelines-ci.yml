@@ -1,0 +1,88 @@
+# Trigger branch name
+trigger:
+  - master
+
+# Build number format
+name: $(Date:yyyyMMdd)$(Rev:.r)
+
+# Variable groups and pipeline variables
+variables:
+  - group: Practice.Generic.VariableGroup
+  
+  - name: vmImage
+    value: vs2017-win2016
+  - name: Sonar.ServiceConnection.Name
+    value: SonarCloud
+  - name: BuildConfiguration
+    value: Release
+  - name: BuildPlatform
+    value: any cpu
+
+# Schedule for multiple times
+schedules:
+  - cron: "0 0 * * *"
+    displayName: Daily midnight build
+    branches:
+      include:
+       - master
+
+# Job details with template to execute
+jobs:
+  - job: Build_UnitTest_Security_Sonar_Artifact
+    workspace:
+      clean: all
+    pool:
+      demands: java
+      vmImage: ${{ variables.vmImage }}
+    steps:
+      - template: build.yml
+        parameters:
+          testSource: $(Build.SourcesDirectory)\tests\Employee.Web.UI.Test.XUnit
+          appSource: src\Employee.Web.UI
+
+
+  - job: Database_Artifact
+    workspace:
+      clean: all
+    pool:
+      demands: msbuild
+      vmImage: ${{ variables.vmImage }}
+    steps:
+      - template: database.yml
+        parameters:
+          sourceProject: src/Employee.Database.SqlServer/Employee.Database.SqlServer.sqlproj
+
+
+  - job: Tests_Atrifact 
+    workspace:
+      clean: all
+    pool:
+      demands: msbuild
+      vmImage: ${{ variables.vmImage }}
+    steps:
+      - template: load-ui-tests.yml 
+        parameters:
+          solution: EmployeeWithDatabaseAzureDevOps.sln
+          sourceProject: tests/Employee.Web.UI.Test.Selenium/Employee.Web.UI.Test.Selenium.csproj
+
+
+  - job: ARM_Templates_Artifact
+    workspace:
+      clean: all
+    pool:
+      vmImage: ${{ variables.vmImage }}
+    steps:
+      - template: artifact-arm.yml 
+        parameters:
+          source: solution/infrastructure/armtemplates
+
+
+  - job: Terraform_Artifact
+    workspace:
+      clean: all
+    pool:
+      vmImage: ${{ variables.vmImage }}
+    steps:
+      - template: artifact-terraform.yml 
+        parameters:
+          source: solution/infrastructure/terraform

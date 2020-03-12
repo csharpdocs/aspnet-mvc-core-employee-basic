@@ -1,0 +1,25 @@
+parameters:
+  source: ''
+
+steps:
+  - bash: |
+      if [ -z "$SOLUTION" ]; then
+        echo "##vso[task.logissue type=error;]Missing template parameter \"source\""
+        echo "##vso[task.complete result=Failed;]"
+      fi
+    env:
+      SOLUTION: ${{ parameters.source }}
+    displayName: Check for required arm templates artifact parameter 'source'
+
+  - task: CopyFiles@2
+    displayName: 'Copy ARM Template Files to Target Folder'
+    inputs:
+      SourceFolder: ${{ parameters.source }}
+      Contents: '*.json'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish: Pipeline Artifact(armtemplates)'
+    inputs:
+      ArtifactName: armtemplates
+      condition: succeededOrFailed()
