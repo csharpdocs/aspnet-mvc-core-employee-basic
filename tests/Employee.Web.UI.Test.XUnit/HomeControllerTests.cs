@@ -20,29 +20,37 @@ namespace Employee.Web.UI.Test.XUnit
         }
 
         [Fact]
-        public void About_should_return_default_view()
+        public void About_should_return_about_view()
         {
             //Arrange
             var homeController = new HomeController();
 
             //Act
-            var result = homeController.Index();
+           
+            var result = homeController.About();
+            var viewResult = result as ViewResult;
+            viewResult.ViewData["Message"] = "sample view data";
 
             //Assert
             Assert.IsType<ViewResult>(result);
+            Assert.Same("sample view data", viewResult.ViewData["Message"]);
         }
 
         [Fact]
-        public void Contact_should_return_default_view()
+        public void Contact_should_return_contact_view()
         {
             //Arrange
             var homeController = new HomeController();
 
             //Act
-            var result = homeController.Index();
+
+            var result = homeController.Contact();
+            var viewResult = result as ViewResult;
+            viewResult.ViewData["Message"] = "sample view data";
 
             //Assert
             Assert.IsType<ViewResult>(result);
+            Assert.Same("sample view data", viewResult.ViewData["Message"]);
         }
     }
 }
