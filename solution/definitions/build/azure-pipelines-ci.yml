@@ -7,12 +7,12 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 
 # Variable groups and pipeline variables
 variables:
-  - group: Practice.Generic.VariableGroup
+  - group: Csharpdocs.GitHub.Generic.Variables
   
   - name: vmImage
     value: vs2017-win2016
   - name: Sonar.ServiceConnection.Name
-    value: SonarCloud
+    value: sonarcloud
   - name: BuildConfiguration
     value: Release
   - name: BuildPlatform
