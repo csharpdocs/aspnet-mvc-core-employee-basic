@@ -246,6 +246,22 @@ namespace Employee.Web.UI.Test.XUnit
             }
         }
 
+        [Fact]
+        public async Task DeleteConfirmed_should_return_index_view()
+        {
+            //Arrange
+            var employeeContext = await GetDatabaseContext();
+            using (var employeeController = new EmployeesController(employeeContext))
+            {
+                //Act
+                var actionResult = await employeeController.DeleteConfirmed(1003);
+
+                //Assert
+                var result = Assert.IsType<RedirectToActionResult>(actionResult);
+                Assert.Equal("Index", result.ActionName);
+            }
+        }
+
         private async Task<WebAppContext> GetDatabaseContext()
         {
             var options = new DbContextOptionsBuilder<WebAppContext>()
